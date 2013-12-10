@@ -3,7 +3,6 @@
 #
 # Copyright (c) 2013 Rafael R. Sevilla (http://games.stormwyrm.com)
 #
-#
 # Licensed under the Apache License, Version 2.0 (the "License"); you
 # may not use this file except in compliance with the License. You may
 # obtain a copy of the License at
@@ -354,7 +353,12 @@ class BPTDB
         offset = fp.tell
       end
       fp.seek(offset)
-      bdata = data.encode("")
+      bdata = nil
+      if @dataclass.respond_to?(:encode)
+        bdata = @dataclass.encode(data)
+      else
+        bdata = data.encode("")
+      end
       len = bdata.length
       if len > PAGESIZE
         raise "data too big to fit in page"
@@ -572,7 +576,11 @@ class BPTDB
     if page.class == LPage
       page.each do |k,v|
         v = loaddata(v)
-        fp.puts([k, v].inspect)
+        if (@dataclass.respond_to?(:dumpobj))
+          fp.puts([k, @dataclass.dumpobj(v)].inspect)
+        else
+          fp.puts([k, v].inspect)
+        end
       end
       return
     end
