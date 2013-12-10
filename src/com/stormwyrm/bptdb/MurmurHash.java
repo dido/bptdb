@@ -17,6 +17,9 @@ package com.stormwyrm.bptdb;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * An implementation of 32-bit variant of MurmurHash3.
+ */
 public class MurmurHash
 {
 	private static final int C1 = 0xcc9e2d51;
@@ -28,6 +31,11 @@ public class MurmurHash
 		return(((x << k) | (x >>> (32 - k))) & 0xffffffff);
 	}	
 
+	/**
+	 * Hash a string, given a seed value.
+	 * @param str the string to hash
+	 * @param seed the seed for the hash
+	 */
 	public static int hash(String str, int seed)
 	{
 		byte[] data;
@@ -41,11 +49,20 @@ public class MurmurHash
 		return(hash(data, seed));
 	}
 
+	/**
+	 * Hash a string, using the default seed.
+	 * @param str the string to hash
+	 */
 	public static int hash(String str)
 	{
 		return(hash(str, 0xdeadbeef));
 	}
 
+	/**
+	 * Hash an integer, given a seed value.
+	 * @param val the integer to hash
+	 * @param seed the seed for the hash
+	 */
 	public static int hash(int val, int seed)
 	{
 		tmpdata[0] = (byte)(val & 0xff);
@@ -55,11 +72,20 @@ public class MurmurHash
 		return(hash(tmpdata, seed));
 	}
 
+	/**
+	 * Hash an integer, using the default seed.
+	 * @param val the integer to hash
+	 */
 	public static int hash(int val)
 	{
 		return(hash(val, 0xdeadbeef));
 	}
 
+	/**
+	 * Hash a byte array, given a seed value.
+	 * @param data the bytes to hash
+	 * @param seed the seed for the hash
+	 */
 	public static int hash(byte[] data, int seed)
 	{
 		int h1 = seed;
