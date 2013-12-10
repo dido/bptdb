@@ -1,0 +1,27 @@
+[name]
+BPTDB
+
+[author]
+Rafael R. Sevilla
+
+[author-website]
+http://games.stormwyrm.com
+
+[description]
+A small B+ Tree flat file database.<br/><br/>
+
+[homepage]
+http://games.stormwyrm.com/bptdb/
+
+[stable-version]
+0.0.1
+
+[stable-url]
+file:///home/dido/progs/games/bptdb/bptdb-0.0.1.zip
+
+[gwt]
+stormwyrm.bptdb
+
+[libs-common]
+bptdb.jar
+bptdb-sources.jar
