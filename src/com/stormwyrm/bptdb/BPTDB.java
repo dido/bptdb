@@ -27,7 +27,7 @@ import com.badlogic.gdx.files.FileHandle;
  * @author Rafael R. Sevilla
  * @see BPTDBPB
  */
-public class BPTDB
+public class BPTDB<T>
 {
 	public static final int IPAGE = 0;
 	public static final int LPAGE = 1;
@@ -252,14 +252,19 @@ public class BPTDB
 	}
 
 	private PageLoader pageloader;
+	private Decoder<T> decoder;
+	private FileHandle fh;
 
 	/**
 	 * Create a new BPTDB instance, given the libgdx <code>FileHandle fh</code>.
 	 * @param <code>fh</code> file handle on which this instance is based. 
+	 * @param <code>decoder</code> decoder for objects.
 	 */
-	public BPTDB(FileHandle fh)
+	public BPTDB(FileHandle fh, Decoder<T> decoder)
 	{
+		this.fh = fh;
 		pageloader = new PageLoader(fh);
+		this.decoder = decoder;
 	}
 
 	/**
@@ -275,10 +280,39 @@ public class BPTDB
 			page = pageloader.loadPage(offset);
 			if (page == null)
 				return(null);
-			if (page instanceof LPage) {
+			if (page instanceof BPTDB.LPage) {
 				return(page.get(key));
 			}
 			offset = page.get(key);
 		}
+	}
+	/**
+	 * Search for the string key <code>key</code> inside the database.  Returns the offset corresponding to the key if it
+	 * exists, or <code>null</code> if the key is not present in the database.  Keys are converted to integers using MurmurHash.
+	 * @param <code>key</code> the key to search for 
+	 */
+	public Integer search(String key)
+	{
+		int ik = MurmurHash.hash(key);
+		return(search(ik));
+	}
+
+	/**
+	 * Get the object corresponding to the string <code>key</code>.  Returns the object if it is found, or <code>null</code>
+	 * if the key is not present in the database.
+	 * @param <code>key</code> the key to search for.
+	 */
+	public T get(String key)
+	{
+		Integer offset = search(key);
+		if (offset == null)
+			return(null);
+		InputStream dbis = fh.read();
+		try {
+			dbis.skip(offset);
+		} catch (IOException ex) {
+			return(null);
+		}
+		return(decoder.decode(dbis));
 	}
 }
