@@ -455,6 +455,9 @@ class BPTDB
 
   # Parse an object description
   def parseobj(text)
+    if @dataclass.respond_to?(:parseobj)
+      return(@dataclass.parseobj(text))
+    end
     unless /^<([A-Za-z]+)\s+(.+)/ =~ text
       raise "Invalid object format"
     end
