@@ -17,10 +17,7 @@ http://games.stormwyrm.com/bptdb/
 0.0.1
 
 [stable-url]
-file:///home/dido/progs/games/bptdb/bptdb-0.0.1.zip
-
-[gwt]
-stormwyrm.bptdb
+<insert URL here>
 
 [libs-common]
 bptdb.jar
