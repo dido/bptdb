@@ -319,7 +319,7 @@ public class BPTDB<T>
 	}
 
 	/**
-	 * Get the object corresponding to the string <code>key</code>.  Returns the object if it is found, or <code>null</code>
+	 * Get the object corresponding to the integer <code>key</code>.  Returns the object if it is found, or <code>null</code>
 	 * if the key is not present in the database.
 	 * @param <code>key</code> the key to search for.
 	 */
