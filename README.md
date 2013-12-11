@@ -1,3 +1,7 @@
+Copyright &copy; 2013 Rafael R. Sevilla
+See the end for copying conditions.
+***
+
 # BPTDB -- A Simple B+ Tree Flat File Database
 
 The amount of metadata for my game project is growing rapidly, and I
@@ -41,7 +45,7 @@ It can additionally respond to the following methods:
   string that can be decoded by the object.  If this is not defined by
   the data class, the database object itself must then define an
   `encode` method which, if given a string, returns the serialised binary
-  string representation of the database object.
+ representation of the database object.
 * `dumpobj` -- Given an instance of a database object, return a
   human-readable representation of the database object.  If this is
   not defined, the `to_s` method on the database object will be used
@@ -53,8 +57,8 @@ It can additionally respond to the following methods:
 
 If `dumpobj` and `parseobj` are not defined, sensible defaults that
 are applicable for Protobuf objects with Beefcake are used.  In
-particular, Beefcake::Message classes and object instances define all
-the necessary methods.
+particular, `Beefcake::Message` classes and object instances define
+all the necessary methods.
 
 #### Data classes in Java
 
@@ -66,6 +70,52 @@ a method called `decode`, which, given an InputStream, reads the
 InputStream and returns `null` or an instance of a database object
 (class `T`).
 
-### Building a Database
+A sample Java data class that can be used to decode protobuf objects
+is provided in the samples directory.
 
-The `bptree.rb` tool is used to create and manage databases.
+### The `bptree.rb` tool
+
+The `bptree.rb` tool is used to create and manage databases.  It
+requires Ruby 1.9.1 or higher.  To display help, type:
+
+   ruby -I. bptree.rb
+
+The `bptree.rb` tool accepts a database file name on the command line,
+and requires one of the `--dump`, `--load`, or `--query` parameters,
+to give the mode of operation.
+
+The `--dump` mode dumps the contents of an existing database in
+textual form to the file specified, using the `to_s` method of its
+data objects, or the `dumpobj` method of the data class provided.  The
+output of the dump command produces bracketed key-value pairs.  The
+keys are always integers, and the values are the dumps of each of the
+input objects.
+
+The `--load` mode reads a text file specified and writes it to the
+database file specified.  Each line of text in the file is converted
+into a database object and dumped according to the `encode` method of
+the object or the data class.  The same format produced by the dump
+command can be read by the load command, although one may use strings
+as keys in the load command, which are automatically hashed to produce
+integer keys for internal use.
+
+The `--query` mode accepts a string as its parameter, and will display
+the dumped version of a matching data object if it exists, or nothing
+if nothing was found.
+
+The data class may be `require`d by the program using the `--require`
+option, and the data class to use is specified by the `--data-class`
+parameter.
+
+Basically, one maintains a text file with the data in question, and it
+is converted into what is for now a read-only database.
+
+#### Default dump format
+
+The default dump format is based on that used by the Beefcake protobuf
+library.
+
+***
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
