@@ -295,14 +295,8 @@ public class BPTDB<T>
 		return(search(ik));
 	}
 
-	/**
-	 * Get the object corresponding to the string <code>key</code>.  Returns the object if it is found, or <code>null</code>
-	 * if the key is not present in the database.
-	 * @param <code>key</code> the key to search for.
-	 */
-	public T get(String key)
+	private T getData(Integer offset)
 	{
-		Integer offset = search(key);
 		if (offset == null)
 			return(null);
 		InputStream dbis = fh.read();
@@ -312,5 +306,25 @@ public class BPTDB<T>
 			return(null);
 		}
 		return(decoder.decode(dbis));
+	}
+
+	/**
+	 * Get the object corresponding to the string <code>key</code>.  Returns the object if it is found, or <code>null</code>
+	 * if the key is not present in the database.
+	 * @param <code>key</code> the key to search for.
+	 */
+	public T get(String key)
+	{
+		return(getData(search(key)));
+	}
+
+	/**
+	 * Get the object corresponding to the string <code>key</code>.  Returns the object if it is found, or <code>null</code>
+	 * if the key is not present in the database.
+	 * @param <code>key</code> the key to search for.
+	 */
+	public T get(int key)
+	{
+		return(getData(search(key)));
 	}
 }
