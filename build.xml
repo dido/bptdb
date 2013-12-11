@@ -1,0 +1,30 @@
+<project name="bptdb" default="all" basedir=".">
+  <property name="version" value="0.0.1"/>
+  <property name="lib.dir" value="."/>
+  <property name="lib.name" value="bptdb"/>
+  <!-- Build tasks -->
+  <!-- clean -->	
+  <target name="clean">
+    <delete includeEmptyDirs="true">
+      <fileset dir="${lib.dir}" includes="*.jar, bin/, build/, dist/"/>
+    </delete>
+  </target>
+  <target name="init" depends="clean">
+    <mkdir dir="./bin/" />
+  </target>
+  <!-- compile -->
+  <target name="compile" depends="init">
+    <javac debug="on" srcdir="${lib.dir}/src/" destdir="${lib.dir}/bin/" />
+  </target>
+  <target name="package" depends="compile">
+    <jar destfile="${lib.dir}/${lib.name}.jar" basedir="${lib.dir}/bin" />
+  </target>
+  <target name="zip" depends="package">
+    <zip destfile="${lib.name}-${version}.zip">
+      <fileset dir="${lib.dir}" includes="*.jar" />
+    </zip>
+  </target>
+  <target name="all" depends="zip">
+    <antcall target="clean"/>
+  </target>
+</project>
