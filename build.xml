@@ -18,6 +18,7 @@
   </target>
   <target name="package" depends="compile">
     <jar destfile="${lib.dir}/${lib.name}.jar" basedir="${lib.dir}/bin" />
+    <jar destfile="${lib.dir}/${lib.name}-sources.jar" basedir="${lib.dir}/src" />
   </target>
   <target name="zip" depends="package">
     <zip destfile="${lib.name}-${version}.zip">
